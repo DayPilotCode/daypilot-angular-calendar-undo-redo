@@ -1,15 +1,16 @@
 <div class="space">
-  <button (click)="undoButtonClick()" [disabled]="!undoService.canUndo">Undo</button>
-  <button (click)="redoButtonClick()" [disabled]="!undoService.canRedo">Redo</button>
+  <button (click)="undoButtonClick()" [disabled]="!undoService.canUndo()">Undo</button>
+  <button (click)="redoButtonClick()" [disabled]="!undoService.canRedo()">Redo</button>
 </div>
 
 <daypilot-calendar [config]="config" #calendar></daypilot-calendar>
 
 <h2>History</h2>
-<div *ngFor="let item of undoService.history; let i = index"
-     [class.highlighted]="i === undoService.position"
-     class="history-item">
-  <span>{{item.time}}: {{item.text}} (ID: {{item.id}})</span>
-</div>
-<div [class.highlighted]="undoService.history.length && undoService.position === undoService.history.length"></div>
 
+@for (item of undoService.history(); track $index; let i = $index) {
+  <div class="history-item" [class.highlighted]="i === undoService.position()">
+    <span>{{ item.time }}: {{ item.text }} (ID: {{ item.id }})</span>
+  </div>
+}
+
+<div [class.highlighted]="undoService.history().length && undoService.position() === undoService.history().length"></div>

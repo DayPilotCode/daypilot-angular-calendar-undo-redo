@@ -1,4 +1,4 @@
-import {Component, ViewChild, AfterViewInit} from "@angular/core";
+import {Component, ViewChild, AfterViewInit, signal} from "@angular/core";
 import {DayPilot, DayPilotCalendarComponent} from "@daypilot/daypilot-lite-angular";
 import {DataService} from "./data.service";
 import {HistoryRecord, UndoService} from "./undo.service";
@@ -15,7 +15,7 @@ export class CalendarComponent implements AfterViewInit {
   @ViewChild("calendar")
   calendar!: DayPilotCalendarComponent;
 
-  config: DayPilot.CalendarConfig = {
+  config = signal<DayPilot.CalendarConfig>({
     viewType: "Week",
     timeRangeSelectedHandling: "Enabled",
     businessBeginsHour: 9,
@@ -52,12 +52,12 @@ export class CalendarComponent implements AfterViewInit {
       this.undoService.remove(args.e.data, "Event deleted.");
     },
     onBeforeEventRender: args => {
-      args.data.backColor  = "#f5c518";
+      args.data.backColor  = "#f5c518aa";
       args.data.borderColor = "darker";
       args.data.fontColor   = "#111827";
     }
 
-  };
+  });
 
   constructor(private ds: DataService, public undoService: UndoService) {
   }
